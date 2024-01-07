@@ -13,11 +13,9 @@ public class BasicInformationService {
 
     private final CharacterInformationClient characterInformationClient;
 
-//    private MapleApiServiceKey serviceKey;
-
     public String getOcid(String characterName) throws Exception {
         log.debug("[getOcid] CharacterName : {}", characterName);
         return characterInformationClient.getUserOcid(characterName).ocid();
-//        return serviceKey.getKey();
     };
+    
 }
