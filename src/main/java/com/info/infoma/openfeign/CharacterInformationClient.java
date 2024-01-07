@@ -22,40 +22,40 @@ public interface CharacterInformationClient {
       */
     @GetMapping(value = "/maplestory/v1/character/basic")
     CharacterBasicInformation getCharacterBasicInformation(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 
     /**
      * 인기도 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/popularity")
     CharacterPopularity getCharacterPopularity(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 
     /**
      * 종합 능력치 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/stat")
     CharacterStat getCharacterStat(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 
     /**
      * 하이퍼 스탯 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/hyper-stat")
     CharacterHyperStat getCharacterHyperStat(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 
     /**
      * 성향 정보 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/propensity")
     CharacterPropensity getCharacterPropensity(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 
     /**
      * 어빌리티 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/ability")
     CharacterAbility getCharacterAbility(@RequestParam("ocid") String ocid
-            , @JsonFormat(pattern = "yyyy-mm-dd") @RequestParam("date") LocalDate date);
+            , @RequestParam("date") String date);
 }

@@ -19,10 +19,10 @@ class BasicInformationServiceTest {
     @DisplayName("ocid 조회 테스트")
     void getOcidTest() throws Exception {
         // Arrange
-        String actual = "";
+        Object actual = "";
 
         // Act
-        actual = basicInformationService.getOcid("11살");
+        actual = basicInformationService.getCharacterInformation("11살");
 
         // Assert
         Assertions.assertEquals("3cb0134ca18a18657c04facc3e552e98efe8d04e6d233bd35cf2fabdeb93fb0d"
