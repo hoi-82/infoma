@@ -1,5 +1,5 @@
 # info-maple
-MapleStory Information Website
+MapleStory Information Website  
 Setting information other than Configuration in Java is not disclosed.
 
 ## Used
