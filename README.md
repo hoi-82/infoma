@@ -1,5 +1,6 @@
 # info-maple
 MapleStory Information Website
+Setting information other than Configuration in Java is not disclosed.
 
 ## Used
 - Dev Tool: IntelliJ IDE
