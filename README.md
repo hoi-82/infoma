@@ -1,8 +1,16 @@
 # info-maple
-- DevTool : IntelliJ IDE
-- Language : Java
-- Framework : Spring Boot
+MapleStory Information Website  
+Setting information other than Configuration in Java is not disclosed.
 
-MapleAPI Web Used for MapleStory Information
+## Used
+- Dev Tool: IntelliJ IDE
+- Language: Java 21
+- Framework: Spring Boot 3
+- Front Engine: Thymeleaf
+- Cache: Redis
+- RDB: MariaDB
 
-Load the API using openFeign. User information is stored in their cookies and reused, and information once retrieved from the server is stored in rdb.
+
+## copyright
+- Data from Nexon Open Api ([Nexon Open Api](https://openapi.nexon.com/))
+- Front-design from Start Bootstrap ([Start BootStrap](https://github.com/startbootstrap/startbootstrap-sb-admin-2))
