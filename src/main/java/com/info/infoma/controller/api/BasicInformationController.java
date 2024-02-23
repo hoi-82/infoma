@@ -8,8 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "info/basic")
+@RequestMapping(value = "rest/")
 @RequiredArgsConstructor
 public class BasicInformationController {
     private final BasicInformationService basicInformationService;

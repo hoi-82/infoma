@@ -1,6 +1,6 @@
 package com.info.infoma.domain.dto;
 
-import com.info.infoma.domain.vo.AbilityStat;
+import com.info.infoma.domain.vo.stat.AbilityStat;
 
 import java.util.List;
 

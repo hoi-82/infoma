@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 
-@FeignClient(name = "CharacterInformationClient", url = "${maple-api.service.host}", configuration = MapleStoryApiConfig.class)
+@FeignClient(name = "CharacterInformationClient", url = "${maple-api.host}", configuration = MapleStoryApiConfig.class)
 public interface CharacterInformationClient {
     /**
      * 캐릭터 정보(ocid) 조회
@@ -57,5 +57,97 @@ public interface CharacterInformationClient {
      */
     @GetMapping(value = "/maplestory/v1/character/ability")
     CharacterAbility getCharacterAbility(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 장비 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/item-equipment")
+    CharacterItemEquipment getCharacterItemEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 캐시 장비 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/cashitem-equipment")
+    CharacterCashItemEquipment getCharacterCashItemEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 심볼 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/symbol-equipment")
+    CharacterSymbolEquipment getCharacterSymbolEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 적용 세트 효과 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/set-effect")
+    CharacterSetEffect getCharacterSetEffect(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 헤어, 성형, 피부 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/beauty-equipment")
+    CharacterBeautyEquipment getCharacterBeautyEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 안드로이드 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/android-equipment")
+    CharacterAndroidEquipment getAndroidEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 펫 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/pet-equipment")
+    CharacterPetEquipment getCharacterPetEquipment(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 스킬 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/skill")
+    CharacterSkill getCharacterSkill(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 장착 링크 스킬 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/link-skill")
+    CharacterLinkSkill getCharacterLinkSkill(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date
+            , @RequestParam("character_skill_grade") String characterSkillGrade);
+
+    /**
+     * V매트릭스 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/vmatrix")
+    CharacterVMatrix getCharacterVMatrix(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * HEXA 코어 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/hexamatrix")
+    CharacterHexaMatrix getCharacterHexaMatrix(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * HEXA 매트릭스 설정 HEXA 스탯 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/hexamatrix-stat")
+    CharacterHexaMatrixStat getCharacterHexaMatrixStat(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date);
+
+    /**
+     * 무릉도장 최고 기록 정보 조회
+     */
+    @GetMapping(value = "/maplestory/v1/character/dojang")
+    CharacterDojang getCharacterDojang(@RequestParam("ocid") String ocid
             , @RequestParam("date") String date);
 }

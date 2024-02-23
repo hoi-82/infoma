@@ -1,15 +1,19 @@
 package com.info.infoma.service;
 
 import com.info.infoma.domain.dto.*;
+import com.info.infoma.domain.entity.CharacterCache;
 import com.info.infoma.domain.entity.CharacterOcid;
 import com.info.infoma.openfeign.CharacterInformationClient;
+import com.info.infoma.repository.CharacterInfoCacheRepository;
 import com.info.infoma.repository.CharacterOcidRepository;
+import com.info.infoma.util.MapleApiRowDataRefactor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -21,6 +25,7 @@ public class BasicInformationService {
 
     private final CharacterInformationClient characterInformationClient;
     private final CharacterOcidRepository characterOcidRepository;
+    private final CharacterInfoCacheRepository characterInfoCacheRepository;
 
     @Transactional
     public CharacterTotalInformation getCharacterInformation(String characterName) throws Exception {
@@ -34,7 +39,12 @@ public class BasicInformationService {
 
         if(ocidEntity.isPresent()) characterOcid = ocidEntity.orElseThrow().getCharacterOcid();
         else {
-            characterOcid = characterInformationClient.getUserOcid(characterName).ocid();
+            try {
+                characterOcid = characterInformationClient.getUserOcid(characterName).ocid();
+            }catch(Exception ignored) {
+                throw new Exception();
+            }
+
             characterOcidRepository.save(CharacterOcid.builder()
                     .characterName(characterName)
                     .characterOcid(characterOcid)
@@ -48,26 +58,30 @@ public class BasicInformationService {
         log.info("FormattedYesterDay : {}", formattedYesterDay);
 
         CharacterBasicInformation basicInfo = null;
-        CharacterStat stat = null;
-        CharacterHyperStat hyperStat = null;
-        CharacterAbility ability = null;
-        CharacterPopularity popularity = null;
-        CharacterPropensity propensity = null;
+        CharacterSymbolEquipment symbolEquipment = null;
 
         try{
             basicInfo = characterInformationClient.getCharacterBasicInformation(characterOcid, formattedYesterDay);
-            stat = characterInformationClient.getCharacterStat(characterOcid, formattedYesterDay);
-            hyperStat = characterInformationClient.getCharacterHyperStat(characterOcid, formattedYesterDay);
-            ability = characterInformationClient.getCharacterAbility(characterOcid, formattedYesterDay);
-            popularity = characterInformationClient.getCharacterPopularity(characterOcid, formattedYesterDay);
-            propensity = characterInformationClient.getCharacterPropensity(characterOcid, formattedYesterDay);
+            symbolEquipment = characterInformationClient.getCharacterSymbolEquipment(characterOcid, formattedYesterDay);
         }catch(Exception e) {
+            e.printStackTrace();
             throw new Exception();
         }
 
-        return new CharacterTotalInformation(
-                basicInfo, stat, hyperStat, ability, popularity, propensity
+        symbolEquipment.symbol().forEach(MapleApiRowDataRefactor::symbolRefactor);
+
+        CharacterTotalInformation totalInformation = new CharacterTotalInformation(
+                basicInfo, symbolEquipment
         );
+
+        characterInfoCacheRepository.save(
+                CharacterCache.builder()
+                        .characterName(characterName)
+                        .createdAt(LocalDateTime.now())
+                        .info(totalInformation)
+                        .build()
+        );
+
+        return totalInformation;
     }
-    
 }

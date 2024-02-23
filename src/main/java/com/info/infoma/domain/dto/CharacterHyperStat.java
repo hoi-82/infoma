@@ -1,6 +1,6 @@
 package com.info.infoma.domain.dto;
 
-import com.info.infoma.domain.vo.HyperStat;
+import com.info.infoma.domain.vo.stat.HyperStat;
 
 import java.util.List;
 

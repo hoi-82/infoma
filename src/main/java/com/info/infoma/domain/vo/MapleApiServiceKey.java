@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Validated
 @AllArgsConstructor
-@ConfigurationProperties(prefix = "maple-api.service")
+@ConfigurationProperties(prefix = "maple-api")
 public class MapleApiServiceKey {
     @NotEmpty
     private final String key;
