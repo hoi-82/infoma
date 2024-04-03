@@ -6,7 +6,8 @@ Setting information other than Configuration in Java is not disclosed.
 - Dev Tool: IntelliJ IDE
 - Language: Java 21
 - Framework: Spring Boot 3
-- Front Engine: Thymeleaf
+- Build: Gradle
+- Templete Engine: Thymeleaf
 - Cache: Redis
 - RDB: MariaDB
 
