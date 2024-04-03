@@ -1,13 +1,11 @@
 package com.info.infoma.openfeign;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.info.infoma.configuration.MapleStoryApiConfig;
 import com.info.infoma.domain.dto.*;
+import com.info.infoma.domain.dto.character.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
 
 @FeignClient(name = "CharacterInformationClient", url = "${maple-api.host}", configuration = MapleStoryApiConfig.class)
 public interface CharacterInformationClient {
@@ -113,15 +111,15 @@ public interface CharacterInformationClient {
      */
     @GetMapping(value = "/maplestory/v1/character/skill")
     CharacterSkill getCharacterSkill(@RequestParam("ocid") String ocid
-            , @RequestParam("date") String date);
+            , @RequestParam("date") String date
+            , @RequestParam("character_skill_grade") String characterSkillGrade);
 
     /**
      * 장착 링크 스킬 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/link-skill")
     CharacterLinkSkill getCharacterLinkSkill(@RequestParam("ocid") String ocid
-            , @RequestParam("date") String date
-            , @RequestParam("character_skill_grade") String characterSkillGrade);
+            , @RequestParam("date") String date);
 
     /**
      * V매트릭스 정보 조회

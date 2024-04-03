@@ -1,6 +1,5 @@
 package com.info.infoma.domain.entity;
 
-import com.info.infoma.domain.dto.CharacterTotalInformation;
 import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,12 +20,9 @@ public class CharacterCache {
 
     private LocalDateTime createdAt;
 
-    private CharacterTotalInformation info;
-
     @Builder
-    public CharacterCache(String characterName, LocalDateTime createdAt, CharacterTotalInformation info) {
+    public CharacterCache(String characterName, LocalDateTime createdAt) {
         this.characterName = characterName;
         this.createdAt = createdAt;
-        this.info = info;
     }
 }

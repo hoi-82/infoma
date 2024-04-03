@@ -1,10 +1,8 @@
 package com.info.infoma.openfeign;
 
 import com.info.infoma.InfomaApplication;
-import com.info.infoma.domain.dto.CharacterItemEquipment;
+import com.info.infoma.domain.dto.character.CharacterItemEquipment;
 import com.info.infoma.domain.dto.UserOcid;
-import com.info.infoma.domain.vo.item.ItemExceptionalOption;
-import com.info.infoma.domain.vo.item.common.ItemBaseUtility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

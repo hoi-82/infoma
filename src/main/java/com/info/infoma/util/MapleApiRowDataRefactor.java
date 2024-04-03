@@ -1,5 +1,10 @@
 package com.info.infoma.util;
 
+import com.info.infoma.domain.dto.character.CharacterBasicInformation;
+import com.info.infoma.domain.dto.character.CharacterDojang;
+import com.info.infoma.domain.dto.character.CharacterPopularity;
+import com.info.infoma.domain.dto.character.CharacterPropensity;
+import com.info.infoma.domain.dto.response.CharacterBasicTotalInformation;
 import com.info.infoma.domain.enums.SymbolType;
 import com.info.infoma.domain.vo.CharacterSymbol;
 

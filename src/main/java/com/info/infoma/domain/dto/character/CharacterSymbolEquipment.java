@@ -1,4 +1,4 @@
-package com.info.infoma.domain.dto;
+package com.info.infoma.domain.dto.character;
 
 import com.info.infoma.domain.vo.CharacterSymbol;
 

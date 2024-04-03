@@ -1,4 +1,4 @@
-package com.info.infoma.domain.dto;
+package com.info.infoma.domain.dto.character;
 
 public record CharacterBasicInformation(
         String date, String characterName
