@@ -6,7 +6,6 @@ import com.info.infoma.domain.dto.response.CharacterEquipmentTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterSkillTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterStatTotalInformation;
 import com.info.infoma.domain.entity.*;
-import com.info.infoma.domain.entity.common.CharacterCommonCache;
 import com.info.infoma.domain.enums.SkillType;
 import com.info.infoma.domain.vo.DojangRecord;
 import com.info.infoma.domain.vo.Propensity;
@@ -17,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -46,11 +43,11 @@ public class CharacterInformationService {
     private final CharacterStatCacheRepository characterStatCacheRepository;
 
     /**
-     * 캐릭터 Ocid 조회
+     * 캐릭터 ocid 조회
      */
     @Transactional
     private String getCharacterOcid(String characterName) throws Exception {
-        // RDB에 Ocid 수집
+        // RDB에 ocid 수집
         Optional<CharacterOcid> byCharName = characterOcidRepository.findByCharName(characterName);
         if(byCharName.isPresent()) return byCharName.orElseThrow().getCharacterOcid();
         else {
@@ -99,6 +96,7 @@ public class CharacterInformationService {
     /**
      * 캐릭터 스탯, 하이퍼스탯, 어빌리티 정보
      */
+    @Transactional
     public CharacterStatTotalInformation getCharacterStatInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
 
@@ -126,6 +124,7 @@ public class CharacterInformationService {
     /**
      * 캐릭터 장비, 심볼, 캐시 장비, 헤어/성형/피부, 안드로이드, 펫, 세트 효과 정보
      */
+    @Transactional
     public CharacterEquipmentTotalInformation getCharacterEquipmentInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
 
@@ -157,8 +156,9 @@ public class CharacterInformationService {
     }
 
     /**
-     * 캐릭터 스킬, 링크 스킬, V매트릭스(5차), HEXA 코어(6차) 및 HEXA 스탯 정보 조회
+     * 캐릭터 스킬(5차, 6차), 링크 스킬, V매트릭스(5차), HEXA 코어(6차) 및 HEXA 스탯 정보 조회
      */
+    @Transactional
     public CharacterSkillTotalInformation getCharacterSkillInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
 
