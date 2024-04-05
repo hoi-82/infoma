@@ -5,8 +5,8 @@ import com.info.infoma.domain.dto.response.CharacterBasicTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterEquipmentTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterSkillTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterStatTotalInformation;
-import com.info.infoma.domain.entity.CharacterBasicCache;
-import com.info.infoma.domain.entity.CharacterOcid;
+import com.info.infoma.domain.entity.*;
+import com.info.infoma.domain.entity.common.CharacterCommonCache;
 import com.info.infoma.domain.enums.SkillType;
 import com.info.infoma.domain.vo.DojangRecord;
 import com.info.infoma.domain.vo.Propensity;
@@ -25,6 +25,7 @@ import java.util.Optional;
  * 캐릭터 정보 조회 서비스
  *
  * 전날 정보만을 불러오고 있으며, 캐릭터 명/OCID 수집
+ * 2024-04-05 -> 실시간 데이터로 변경 작업
  */
 @Service
 @RequiredArgsConstructor
@@ -70,26 +71,15 @@ public class CharacterInformationService {
     @Transactional
     public CharacterBasicTotalInformation getCharacterBasicInfo(String characterName) throws Exception {
         String ocid = getCharacterOcid(characterName);
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
         Optional<CharacterBasicCache> basicCacheOptional = characterBasicCacheRepository.findById(characterName);
 
         // 캐시 히트
-        if(basicCacheOptional.isPresent()) {
-            CharacterBasicCache cacheData = basicCacheOptional.orElseThrow();
-            // 과거 데이터인지 확인
-            if(!yesterday.equals(cacheData.getDataTime())) {
-                characterBasicCacheRepository.delete(cacheData);
-            } else {
-                log.debug("character basic info cache hit!");
-                return cacheData.getBasic();
-            }
-        }
+        if(basicCacheOptional.isPresent()) return basicCacheOptional.orElseThrow().getBasic();
 
-        CharacterBasicInformation characterBasicInformation = characterInformationClient.getCharacterBasicInformation(ocid, yesterday);
-        CharacterPopularity characterPopularity = characterInformationClient.getCharacterPopularity(ocid, yesterday);
-        CharacterPropensity characterPropensity = characterInformationClient.getCharacterPropensity(ocid, yesterday);
-        CharacterDojang characterDojang = characterInformationClient.getCharacterDojang(ocid, yesterday);
+        CharacterBasicInformation characterBasicInformation = characterInformationClient.getCharacterBasicInformation(ocid);
+        CharacterPopularity characterPopularity = characterInformationClient.getCharacterPopularity(ocid);
+        CharacterPropensity characterPropensity = characterInformationClient.getCharacterPropensity(ocid);
+        CharacterDojang characterDojang = characterInformationClient.getCharacterDojang(ocid);
 
         CharacterBasicTotalInformation basic = new CharacterBasicTotalInformation(characterBasicInformation
                 , characterPopularity.popularity()
@@ -98,7 +88,6 @@ public class CharacterInformationService {
 
         CharacterBasicCache newCache = CharacterBasicCache.builder()
                 .characterName(characterName)
-                .dataTime(yesterday)
                 .basic(basic)
                 .build();
 
@@ -112,13 +101,26 @@ public class CharacterInformationService {
      */
     public CharacterStatTotalInformation getCharacterStatInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        CharacterStat characterStat = characterInformationClient.getCharacterStat(ocid, yesterday);
-        CharacterHyperStat characterHyperStat = characterInformationClient.getCharacterHyperStat(ocid, yesterday);
-        CharacterAbility characterAbility = characterInformationClient.getCharacterAbility(ocid, yesterday);
+        Optional<CharacterStatCache> statCacheOptional = characterStatCacheRepository.findById(characterName);
 
-        return new CharacterStatTotalInformation(characterStat, characterHyperStat, characterAbility);
+        // 캐시 히트
+        if(statCacheOptional.isPresent()) return statCacheOptional.orElseThrow().getStat();
+
+        CharacterStat characterStat = characterInformationClient.getCharacterStat(ocid);
+        CharacterHyperStat characterHyperStat = characterInformationClient.getCharacterHyperStat(ocid);
+        CharacterAbility characterAbility = characterInformationClient.getCharacterAbility(ocid);
+
+        CharacterStatTotalInformation characterStatTotalInformation = new CharacterStatTotalInformation(characterStat, characterHyperStat, characterAbility);
+
+        CharacterStatCache newCache = CharacterStatCache.builder()
+                .characterName(characterName)
+                .stat(characterStatTotalInformation)
+                .build();
+
+        characterStatCacheRepository.save(newCache);
+
+        return characterStatTotalInformation;
     }
 
     /**
@@ -126,19 +128,32 @@ public class CharacterInformationService {
      */
     public CharacterEquipmentTotalInformation getCharacterEquipmentInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        CharacterItemEquipment characterItemEquipment = characterInformationClient.getCharacterItemEquipment(ocid, yesterday);
-        CharacterSymbolEquipment characterSymbolEquipment = characterInformationClient.getCharacterSymbolEquipment(ocid, yesterday);
-        CharacterCashItemEquipment characterCashItemEquipment = characterInformationClient.getCharacterCashItemEquipment(ocid, yesterday);
-        CharacterBeautyEquipment characterBeautyEquipment = characterInformationClient.getCharacterBeautyEquipment(ocid, yesterday);
-        CharacterAndroidEquipment androidEquipment = characterInformationClient.getAndroidEquipment(ocid, yesterday);
-        CharacterPetEquipment characterPetEquipment = characterInformationClient.getCharacterPetEquipment(ocid, yesterday);
-        CharacterSetEffect characterSetEffect = characterInformationClient.getCharacterSetEffect(ocid, yesterday);
+        Optional<CharacterEquipmentCache> equipmentCacheOptional = characterEquipmentCacheRepository.findById(characterName);
 
-        return new CharacterEquipmentTotalInformation(characterItemEquipment, characterSymbolEquipment
+        // 캐시 히트
+        if(equipmentCacheOptional.isPresent()) return equipmentCacheOptional.orElseThrow().getEquipment();
+
+        CharacterItemEquipment characterItemEquipment = characterInformationClient.getCharacterItemEquipment(ocid);
+        CharacterSymbolEquipment characterSymbolEquipment = characterInformationClient.getCharacterSymbolEquipment(ocid);
+        CharacterCashItemEquipment characterCashItemEquipment = characterInformationClient.getCharacterCashItemEquipment(ocid);
+        CharacterBeautyEquipment characterBeautyEquipment = characterInformationClient.getCharacterBeautyEquipment(ocid);
+        CharacterAndroidEquipment androidEquipment = characterInformationClient.getAndroidEquipment(ocid);
+        CharacterPetEquipment characterPetEquipment = characterInformationClient.getCharacterPetEquipment(ocid);
+        CharacterSetEffect characterSetEffect = characterInformationClient.getCharacterSetEffect(ocid);
+
+        CharacterEquipmentTotalInformation characterEquipmentTotalInformation = new CharacterEquipmentTotalInformation(characterItemEquipment, characterSymbolEquipment
                 , characterCashItemEquipment, characterBeautyEquipment, androidEquipment
                 , characterPetEquipment, characterSetEffect);
+
+        CharacterEquipmentCache newCache = CharacterEquipmentCache.builder()
+                .characterName(characterName)
+                .equipment(characterEquipmentTotalInformation)
+                .build();
+
+        characterEquipmentCacheRepository.save(newCache);
+
+        return characterEquipmentTotalInformation;
     }
 
     /**
@@ -146,15 +161,31 @@ public class CharacterInformationService {
      */
     public CharacterSkillTotalInformation getCharacterSkillInfo(String characterName) throws Exception {
         String ocid = characterInformationClient.getUserOcid(characterName).ocid();
-        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        CharacterSkill characterSkill5 = characterInformationClient.getCharacterSkill(ocid, yesterday, SkillType.SKILL_5.getCode());
-        CharacterSkill characterSkill6 = characterInformationClient.getCharacterSkill(ocid, yesterday, SkillType.SKILL_6.getCode());
-        CharacterLinkSkill characterLinkSkill = characterInformationClient.getCharacterLinkSkill(ocid, yesterday);
-        CharacterVMatrix characterVMatrix = characterInformationClient.getCharacterVMatrix(ocid, yesterday);
-        CharacterHexaMatrix characterHexaMatrix = characterInformationClient.getCharacterHexaMatrix(ocid, yesterday);
-        CharacterHexaMatrixStat characterHexaMatrixStat = characterInformationClient.getCharacterHexaMatrixStat(ocid, yesterday);
+        Optional<CharacterSkillCache> skillCacheOptional = characterSkillCacheRepository.findById(characterName);
 
-        return new CharacterSkillTotalInformation();
+        // 캐시 히트
+        if(skillCacheOptional.isPresent()) return skillCacheOptional.orElseThrow().getSkill();
+
+        CharacterSkill characterSkill5 = characterInformationClient.getCharacterSkill(ocid, SkillType.SKILL_5.getCode());
+        CharacterSkill characterSkill6 = characterInformationClient.getCharacterSkill(ocid, SkillType.SKILL_6.getCode());
+        CharacterLinkSkill characterLinkSkill = characterInformationClient.getCharacterLinkSkill(ocid);
+        CharacterVMatrix characterVMatrix = characterInformationClient.getCharacterVMatrix(ocid);
+        CharacterHexaMatrix characterHexaMatrix = characterInformationClient.getCharacterHexaMatrix(ocid);
+        CharacterHexaMatrixStat characterHexaMatrixStat = characterInformationClient.getCharacterHexaMatrixStat(ocid);
+
+        CharacterSkillTotalInformation characterSkillTotalInformation = new CharacterSkillTotalInformation(
+                characterSkill5, characterSkill6, characterLinkSkill, characterVMatrix
+                ,characterHexaMatrix, characterHexaMatrixStat
+        );
+
+        CharacterSkillCache newCache = CharacterSkillCache.builder()
+                .characterName(characterName)
+                .skill(characterSkillTotalInformation)
+                .build();
+
+        characterSkillCacheRepository.save(newCache);
+
+        return characterSkillTotalInformation;
     }
 }

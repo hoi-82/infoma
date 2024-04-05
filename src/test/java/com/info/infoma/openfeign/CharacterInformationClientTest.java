@@ -41,10 +41,8 @@ class CharacterInformationClientTest {
     void getItemEquipment() throws Exception {
         // Arrange
         String ocid = "3cb0134ca18a18657c04facc3e552e98efe8d04e6d233bd35cf2fabdeb93fb0d";
-        String date = LocalDate.now().minusDays(1)
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         // Act
-        CharacterItemEquipment characterItemEquipment = characterInformationClient.getCharacterItemEquipment(ocid, date);
+        CharacterItemEquipment characterItemEquipment = characterInformationClient.getCharacterItemEquipment(ocid);
         System.out.println(characterItemEquipment.characterClass());
 
         // Assert
