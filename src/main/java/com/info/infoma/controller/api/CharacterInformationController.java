@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * 캐릭터 정보 조회 Endpoint
  *
@@ -34,6 +36,20 @@ public class CharacterInformationController {
                 .status(true)
                 .message("캐릭터 기본 정보를 불러오는데 성공하였습니다.")
                 .data(characterInformationService.getCharacterBasicInfo(characterName))
+                .build()
+        );
+    }
+
+    /**
+     * 최근 조회 Short 정보
+     */
+    @GetMapping(value = "/short")
+    public ResponseEntity<?> getShort() throws Exception {
+        log.debug("[최근 캐릭터 Short 리스트] 조회");
+        return ResponseEntity.ok(SuccessResponse.<List<CharacterBasicTotalInformation>>builder()
+                .status(true)
+                .message("최근 조회 Short 정보를 불러오는데 성공하였습니다.")
+                .data(characterInformationService.getCharacterShort())
                 .build()
         );
     }

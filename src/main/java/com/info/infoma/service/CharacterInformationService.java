@@ -13,10 +13,14 @@ import com.info.infoma.openfeign.CharacterInformationClient;
 import com.info.infoma.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 캐릭터 정보 조회 서비스
@@ -38,6 +42,7 @@ public class CharacterInformationService {
 
     // Cache Repository
     private final CharacterBasicCacheRepository characterBasicCacheRepository;
+    private final CharacterShortRepository characterShortRepository;
     private final CharacterEquipmentCacheRepository characterEquipmentCacheRepository;
     private final CharacterSkillCacheRepository characterSkillCacheRepository;
     private final CharacterStatCacheRepository characterStatCacheRepository;
@@ -91,6 +96,25 @@ public class CharacterInformationService {
         characterBasicCacheRepository.save(newCache);
 
         return basic;
+    }
+
+    /**
+     * 최근 조회 Short 정보
+     */
+    public List<CharacterBasicTotalInformation> getCharacterShort() throws Exception {
+        Iterable<CharacterBasicCache> createdAt = characterShortRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<CharacterBasicTotalInformation> list = new ArrayList<>();
+        Iterator<CharacterBasicCache> iterator = createdAt.iterator();
+
+        while(iterator.hasNext()) {
+            CharacterBasicCache next = iterator.next();
+            if(next != null) list.add(next.getBasic());
+        }
+//        Page<CharacterBasicCache> cachePage = characterShortRepository.findAll(PageRequest.of(0, 10));
+
+//        return cachePage.isEmpty() ? new LinkedList<>() : cachePage.get().map(CharacterBasicCache::getBasic).toList();
+
+        return list;
     }
 
     /**

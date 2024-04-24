@@ -18,8 +18,8 @@ public class DojangRecord {
     public static DojangRecord toDojangRecord(CharacterDojang characterDojang) {
         return DojangRecord.builder()
                 .dojangBestFloor(characterDojang.dojangBestFloor())
-                .dateDojangRecord(characterDojang.dateDojangRecord().split("T")[0])
-                .dojangBestTime((characterDojang.dojangBestTime() / 60)+"분 "+(characterDojang.dojangBestTime() % 60)+"초")
+                .dateDojangRecord(characterDojang.dateDojangRecord() == null ? "" : characterDojang.dateDojangRecord().split("T")[0])
+                .dojangBestTime((characterDojang.dojangBestTime() / 60) + "분 " + (characterDojang.dojangBestTime() % 60) + "초")
                 .build();
     }
 }

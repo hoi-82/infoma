@@ -12,8 +12,8 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableConfigurationProperties({MapleApiServiceKey.class})
 @SpringBootApplication
 @EnableFeignClients
-@EnableJpaRepositories
-@EnableRedisRepositories
+@EnableJpaRepositories(basePackages = "com.info.infoma.repository")
+@EnableRedisRepositories(basePackages = "com.info.infoma.repository")
 public class InfomaApplication {
 
 	public static void main(String[] args) {
