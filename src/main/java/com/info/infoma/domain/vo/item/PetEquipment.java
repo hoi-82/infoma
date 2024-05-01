@@ -2,12 +2,14 @@ package com.info.infoma.domain.vo.item;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
 public class PetEquipment {
     private String itemName;

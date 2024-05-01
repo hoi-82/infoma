@@ -4,10 +4,9 @@ import com.info.infoma.domain.vo.item.common.ItemBaseUtility;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @SuperBuilder
 public class ItemAddOption extends ItemBaseUtility {
     private String bossDamage;

@@ -1,19 +1,21 @@
 package com.info.infoma.domain.vo.item;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ItemMechanicEquipment {
     private String itemEquipmentPart;
-    private String equipmentSlot;
+    private String itemEquipmentSlot;
     private String itemName;
     private String itemIcon;
     private String itemDescription;
     private String itemShapeName;
     private String itemShapeIcon;
-    private String gender;
+    private String itemGender;
     private ItemTotalOption itemTotalOption;
     private ItemBaseOption itemBaseOption;
     private Integer equipmentLevelIncrease;

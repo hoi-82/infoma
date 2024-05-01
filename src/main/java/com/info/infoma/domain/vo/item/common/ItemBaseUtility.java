@@ -3,8 +3,9 @@ package com.info.infoma.domain.vo.item.common;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @SuperBuilder
 public class ItemBaseUtility extends ItemBaseStat {
     private String armor;

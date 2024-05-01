@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,7 @@ public class CharacterInformationService {
         CharacterBasicCache newCache = CharacterBasicCache.builder()
                 .characterName(characterName)
                 .basic(basic)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         characterBasicCacheRepository.save(newCache);
@@ -138,6 +140,7 @@ public class CharacterInformationService {
         CharacterStatCache newCache = CharacterStatCache.builder()
                 .characterName(characterName)
                 .stat(characterStatTotalInformation)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         characterStatCacheRepository.save(newCache);
@@ -172,6 +175,7 @@ public class CharacterInformationService {
         CharacterEquipmentCache newCache = CharacterEquipmentCache.builder()
                 .characterName(characterName)
                 .equipment(characterEquipmentTotalInformation)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         characterEquipmentCacheRepository.save(newCache);
@@ -206,6 +210,7 @@ public class CharacterInformationService {
         CharacterSkillCache newCache = CharacterSkillCache.builder()
                 .characterName(characterName)
                 .skill(characterSkillTotalInformation)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         characterSkillCacheRepository.save(newCache);

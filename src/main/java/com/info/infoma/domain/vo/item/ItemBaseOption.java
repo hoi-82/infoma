@@ -4,10 +4,9 @@ import com.info.infoma.domain.vo.item.common.ItemBaseUtility;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 @SuperBuilder
 public class ItemBaseOption extends ItemBaseUtility {
     private String bossDamage;
@@ -15,5 +14,5 @@ public class ItemBaseOption extends ItemBaseUtility {
     private String allStat;
     private String maxHpRate;
     private String maxMpRate;
-    private String baseEquipmentLevel;
+    private Integer baseEquipmentLevel;
 }

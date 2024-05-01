@@ -8,13 +8,13 @@ import lombok.Setter;
 @Setter
 public class ItemDragonEquipment {
     private String itemEquipmentPart;
-    private String equipmentSlot;
+    private String itemEquipmentSlot;
     private String itemName;
     private String itemIcon;
     private String itemDescription;
     private String itemShapeName;
     private String itemShapeIcon;
-    private String gender;
+    private String itemGender;
     private ItemTotalOption itemTotalOption;
     private ItemBaseOption itemBaseOption;
     private Integer equipmentLevelIncrease;
