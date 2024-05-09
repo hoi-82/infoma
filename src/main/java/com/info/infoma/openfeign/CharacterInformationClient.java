@@ -29,6 +29,14 @@ public interface CharacterInformationClient {
     );
 
     /**
+     * 캐릭터 기본 정보 조회 (특정 날짜)
+     */
+    @GetMapping(value = "/maplestory/v1/character/basic")
+    CharacterBasicInformation getCharacterBasicInformationByDate(@RequestParam("ocid") String ocid
+            , @RequestParam("date") String date
+    );
+
+    /**
      * 인기도 정보 조회
      */
     @GetMapping(value = "/maplestory/v1/character/popularity")

@@ -6,6 +6,7 @@ import com.info.infoma.domain.dto.response.CharacterEquipmentTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterSkillTotalInformation;
 import com.info.infoma.domain.dto.response.CharacterStatTotalInformation;
 import com.info.infoma.domain.entity.*;
+import com.info.infoma.domain.entity.Character;
 import com.info.infoma.domain.enums.SkillType;
 import com.info.infoma.domain.vo.DojangRecord;
 import com.info.infoma.domain.vo.Propensity;
@@ -13,15 +14,12 @@ import com.info.infoma.openfeign.CharacterInformationClient;
 import com.info.infoma.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 캐릭터 정보 조회 서비스
@@ -39,7 +37,7 @@ public class CharacterInformationService {
     private final CharacterInformationClient characterInformationClient;
 
     // RDB Repository
-    private final CharacterOcidRepository characterOcidRepository;
+    private final CharacterRepository characterRepository;
 
     // Cache Repository
     private final CharacterBasicCacheRepository characterBasicCacheRepository;
@@ -54,15 +52,15 @@ public class CharacterInformationService {
     @Transactional
     private String getCharacterOcid(String characterName) throws Exception {
         // RDB에 ocid 수집
-        Optional<CharacterOcid> byCharName = characterOcidRepository.findByCharName(characterName);
+        Optional<Character> byCharName = characterRepository.findByCharacterName(characterName);
         if(byCharName.isPresent()) return byCharName.orElseThrow().getCharacterOcid();
         else {
             String characterOcid = characterInformationClient.getUserOcid(characterName).ocid();
-            CharacterOcid newOcid = CharacterOcid.builder()
+            Character newOcid = Character.builder()
                     .characterOcid(characterOcid)
                     .characterName(characterName)
                     .build();
-            characterOcidRepository.save(newOcid);
+            characterRepository.save(newOcid);
 
             return characterOcid;
         }

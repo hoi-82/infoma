@@ -1,19 +1,14 @@
 package com.info.infoma.openfeign;
 
-import com.info.infoma.InfomaApplication;
-import com.info.infoma.domain.dto.character.CharacterItemEquipment;
 import com.info.infoma.domain.dto.UserOcid;
+import com.info.infoma.domain.dto.character.CharacterItemEquipment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest(classes = InfomaApplication.class)
+// @SpringBootTest(classes = InfomaApplication.class)
 @DisplayName("Client 단 조회 테스트")
 class CharacterInformationClientTest {
 
